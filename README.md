@@ -1,6 +1,8 @@
 Basic operations with polyhedra and numpy 
 =========================================
 
+<img align="right" width="300" height="300" src="unit_sphere.png">
+
 This set of functions offer the following functionality using well-known algorithms,
 with only `numpy` as dependency:
 
