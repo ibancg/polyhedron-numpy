@@ -6,7 +6,7 @@ with only `numpy` as dependency:
 
 * Determine if a set of **points are inside/outside a polyhedron**, based on the
 surface triangles.
-* Compute the **surface** of the polyhedron.
+* Compute the **surface area** of the polyhedron.
 
 If we also have a tetrahedral mesh, we can
 
