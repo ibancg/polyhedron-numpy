@@ -4,7 +4,7 @@ Basic operations with polyhedra and numpy
 This set of functions offer the following functionality using well-known algorithms,
 with only `numpy` as dependency:
 
-* Determine whether a set of **points are inside/outside a polyhedron**, based on the
+* Determine if a set of **points are inside/outside a polyhedron**, based on the
 surface triangles.
 * Compute the **surface** of the polyhedron.
 
@@ -12,6 +12,8 @@ If we also have a tetrahedral mesh, we can
 
 * Determine if the points are inside/outside the volume, based on the tetrahedral mesh.
 * Compute the **volume** of the polyhedron.
+
+<img align="right" width="300" height="300" src="unit_sphere.png">
 
 We need a polyhedron in the form of **vertices**, **triangle indices** and/or 
 **tetrahedron indices**, arranged as rows in matrices. We can start with empty matrices:
@@ -25,8 +27,6 @@ v = np.zeros((0, 4), dtype=np.int)
 ```
  
 Here we can create a dummy example with [pygmsh](https://github.com/nschloe/pygmsh). For example a sphere of radius 1:
-
-<img align="right" width="300" height="300" src="unit_sphere.png">
 
 ```python
 import pygmsh
@@ -83,7 +83,7 @@ S = np.sum(np.abs(detS)/2)                    # Surface area.
 
 For this mesh size, the values seems close to the analytical surface and volume of a sphere:
 
-```
+```python
 print('Computed surface    = {:0.2f} m^2'.format(S))
 print('Theoretical surface = {:0.2f} m^2'.format(4*np.pi*R**2))
 print('Computed volume     = {:0.2f} m^3'.format(V))
