@@ -81,7 +81,7 @@ V = np.sum(np.abs(detV)/6)                    # Volume.
 S = np.sum(np.abs(detS)/2)                    # Surface area.
 ```
 
-For this mesh size, the values seems close to the analytical surface and volume of a sphere:
+For this mesh size, the values seem close to the analytical surface and volume of a sphere:
 
 ```python
 print('Computed surface    = {:0.2f} m^2'.format(S))
@@ -139,7 +139,7 @@ iT &= k > 0                                     # Only in the direction of the r
 insideS = np.sum(iT, 0) % 2 == 1                # We collapse into an Nq array of booleans.
 ```
 
-Both methods should wive us the same results:
+Both methods should give us the same results:
 
 ```python 
 assert(np.all(insideV == insideS)) # equal
@@ -170,14 +170,14 @@ insideV_chunks = np.hstack([isInsideV(chunk) for chunk in chunks])
 ```
 
 We see that the ratio of points falling inside the sphere is similar to the ratio of
-volumes of unit sphere and cube [-1, 1]^3
+volumes sphere/cube
 
 ```python
 print('Ratio of points falling inside: {:0.3f}'.format(np.sum(insideV_chunks)/len(q)))
 print('Ratio of volumes sphere/cube:   {:0.3f}'.format(V/2**3))
 ```
 
-results in:
+resulting in:
 
 ```console
 Ratio of points falling inside: 0.502
