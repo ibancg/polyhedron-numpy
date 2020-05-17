@@ -1,8 +1,6 @@
 Basic operations with polyhedra and numpy 
 =========================================
 
-<img align="right" width="300" height="300" src="unit_sphere.png">
-
 This set of functions offer the following functionality using well-known algorithms,
 with only `numpy` as dependency:
 
@@ -28,6 +26,8 @@ v = np.zeros((0, 4), dtype=np.int)
  
 Here we can create a dummy example with [pygmsh](https://github.com/nschloe/pygmsh). For example a sphere of radius 1:
 
+<img align="right" width="300" height="300" src="unit_sphere.png">
+
 ```python
 import pygmsh
 
@@ -40,45 +40,12 @@ s = np.vstack([ c.data for c in mesh.cells if c.data.shape[1] == 3])
 v = np.vstack([ c.data for c in mesh.cells if c.data.shape[1] == 4])
 ```
 
-Our mesh `p`, `s`, `v` (in this case with 205 vertices, 320 triangles and 679 tetrahedrons)
-looks like this:
-
-```console
->>> print(p)
-[[0.         0.         2.        ]
- [0.         0.         0.        ]
- [0.         1.         2.        ]
- ...
- [0.19986275 0.56127981 0.9703212 ]
- [0.56111425 0.44002365 1.13290636]
- [0.79316896 0.72949658 1.62908032]]
- 
->>> print(s)
-[[ 15   0 107]
- [  0  16 107]
- [  1   8 108]
- ...
- [284 285 277]
- [278 289 282]
- [281 285 283]]
- 
->>> print(v)
-[[295 293 301 344]
- [211 298 124 308]
- [297 301 293 344]
- ...
- [307  80 219  95]
- [201 258  66 230]
- [ 66 258 201 244]]
-
-```
-
+Our mesh `p`, `s`, `v` has in this case with 205 vertices, 320 triangles and 679 tetrahedrons.
 If we don't have either the triangles or tetrahedron matrices, we can continue with
 an empty 0x3 or 0x4 matrix.
 Once we have the data, let's get the sizes and group the points per triangle/tetrahedron
 as **numpy cubes**:
  
-
 ```python
 Np = p.shape[0]   # Number of vertices.
 Ns = s.shape[0]   # Number of triangles defining the surface.
@@ -116,17 +83,20 @@ S = np.sum(np.abs(detS)/2)                    # Surface area.
 
 For this mesh size, the values seems close to the analytical surface and volume of a sphere:
 
+```
+print('Computed surface    = {:0.2f} m^2'.format(S))
+print('Theoretical surface = {:0.2f} m^2'.format(4*np.pi*R**2))
+print('Computed volume     = {:0.2f} m^3'.format(V))
+print('Theoretical volume  = {:0.2f} m^3'.format(4/3*np.pi*R**3))
+```
+
+gives:
 
 ```console
->>> R = 1
->>> print(S)
-12.323940939103384
->>> print(4*np.pi*R**2)
-12.566370614359172
->>> print(V)
-4.042168310499373
->>> print(4/3*np.pi*R**3)
-4.1887902047863905
+Computed surface    = 12.32 m^2
+Theoretical surface = 12.57 m^2
+Computed volume     = 4.04 m^3
+Theoretical volume  = 4.19 m^3
 ```
 
 The inverse transformations will help us compute the **barycentric coordinates**
@@ -202,9 +172,14 @@ insideV_chunks = np.hstack([isInsideV(chunk) for chunk in chunks])
 We see that the ratio of points falling inside the sphere is similar to the ratio of
 volumes of unit sphere and cube [-1, 1]^3
 
+```python
+print('Ratio of points falling inside: {:0.3f}'.format(np.sum(insideV_chunks)/len(q)))
+print('Ratio of volumes sphere/cube:   {:0.3f}'.format(V/2**3))
+```
+
+results in:
+
 ```console
->>> np.sum(insideV_chunks)/len(q)
-0.5062
->>> V/2**3
-0.5052710388124216
+Ratio of points falling inside: 0.502
+Ratio of volumes sphere/cube:   0.505
 ```
